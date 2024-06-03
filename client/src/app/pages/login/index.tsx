@@ -1,14 +1,14 @@
-import { Layout } from '../../components/layout'
+import { Layout } from '../../../components/layout'
 import { Card, Form, Row, Space, Typography, message } from 'antd'
-import { CustomInput } from '../../components/custom-input'
-import { PasswordInput } from '../../components/password-input'
-import { CustomButton } from '../../components/custom-button'
+import { CustomInput } from '../../../components/custom-input'
+import { PasswordInput } from '../../../components/password-input'
+import { CustomButton } from '../../../components/custom-button'
 import { Link, useNavigate } from 'react-router-dom'
-import { Paths } from '../../paths'
-import { UserData, useLoginMutation } from '../../app/services/auth'
-import { isErrorWithMessage } from '../../utils/is-error-with-message'
+import { Paths } from '../../../paths'
+import { UserData, useLoginMutation } from '../../../app/services/auth'
+import { isErrorWithMessage } from '../../../utils/is-error-with-message'
 import { useState } from 'react'
-import { ErrorMessage } from '../../components/error-message'
+import { ErrorMessage } from '../../../components/error-message'
 
 export const Login = () => {
 
@@ -19,6 +19,9 @@ export const Login = () => {
   const login = async (data: UserData) => {
     try {
       await loginUser(data).unwrap();
+      console.log(loginUser(data));
+      console.log('=============');
+      console.log(loginUser(data).unwrap());
 
       navigate('/');
 

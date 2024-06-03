@@ -24,7 +24,6 @@ export const PasswordInput = ({
       }, ({ getFieldValue}) => ({
         validator(_, value) {
           if(!value) {
-            console.log(value)
             return Promise.resolve();
           }
 
