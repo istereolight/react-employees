@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom"
 
 const Statuses: Record<string, string> = {
   created: 'Пользователь успешно создан',
-  update: 'Пользователь успешно обновлен',
+  updated: 'Пользователь успешно обновлен',
   deleted: 'Пользователь успешно удалён'
 }
 

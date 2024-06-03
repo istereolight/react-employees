@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigation, useParams } from "react-router-dom"
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 import { 
   useGetEmployeeQuery, 
   useRemoveEmployeeMutation 
@@ -11,10 +11,12 @@ import { Layout } from "../../components/layout";
 import { CustomButton } from "../../components/custom-button";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { ErrorMessage } from "../../components/error-message";
+import { Paths } from "../../paths";
+import { isErrorWithMessage } from "../../utils/is-error-with-message";
 
 
 export const Employee = () => {
-  const navigate = useNavigation();
+  const navigate = useNavigate();
   const [ error, setError] = useState('');
   const params = useParams<{id: string}>();
   const [ isModalOpen, setIsModalOpen ] = useState(false);
@@ -27,9 +29,36 @@ export const Employee = () => {
   }
 
   if (!data) {
-    return <Navigate to={'/'} />
+    return <Navigate to='/' />
   }
-  
+
+  const showModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const hideModal = () => {
+    setIsModalOpen(false)
+  }
+ 
+  const handleDeleteUser = async () => {
+    hideModal();
+
+
+    try {
+      await removeEmployee(data.id).unwrap();
+
+      navigate(`${Paths.status}/deleted`)
+    } catch(error) {
+      const maybeError = isErrorWithMessage(error);
+
+      if (maybeError) {
+        setError(error.data.message)
+      } else {
+        setError('Неизвестная ошибка')
+      }
+    }
+  }
+
   return (
     <Layout>
       <Descriptions title='Информация о сотруднике' bordered>
@@ -60,7 +89,7 @@ export const Employee = () => {
               <CustomButton
               shape="round"
               danger
-              onClick={() => null}
+              onClick={ showModal }
               icon={<DeleteOutlined />}
               >
                 Удалить
@@ -73,8 +102,8 @@ export const Employee = () => {
       <Modal
         title='Подтвердите удаление'
         open={isModalOpen}
-        onOk={ () => null }
-        onCancel= { () => null}
+        onOk={ handleDeleteUser }
+        onCancel= { hideModal }
         okText='Подтвердить' 
         cancelText='Отменить'
       >

@@ -110,8 +110,8 @@ const edit = async (req, res) => {
 
     res.status(204).json('OK');
   }
-  catch {
-    return res.status(500).json({
+  catch (err) {
+    res.status(500).json({
       message: 'Не удалось отредактировать сотрудника'
     })
   }
